@@ -3,7 +3,13 @@
 - name: get currently checked out git branch 
   command: 'git branch --format="%(refname:short)"'
   delegate_to: 127.0.0.1
+  changed_when: no
   register: git_branch
+
+- name: check allowed_branch is defined
+  fail:
+    msg: "Fact allowed_branch is not defined"
+  when: allowed_branch is not defined
 
 - name: check local git branch
   fail: 
