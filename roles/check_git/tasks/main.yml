@@ -1,4 +1,11 @@
 ---
 
-- name: get current git branch
+- name: get currently checked out git branch 
+  command: 'git branch --format="%(refname:short)"'
+  delegate_to: 127.0.0.1
+  register: git_branch
 
+- name: check local git branch
+  fail: 
+    msg: "Local git branch '{{ git_branch.stdout }}' doesn't match allowed branch '{{ allowed_branch }}'"
+  when: git_branch.stdout != allowed_branch
